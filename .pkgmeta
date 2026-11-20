@@ -1,0 +1,21 @@
+# BigWigs packager (https://github.com/BigWigsMods/packager). Ace3 is vendored in libs/, so
+# there are no externals. The packager reads the CurseForge project from the TOC's
+# X-Curse-Project-ID and the game version from its Interface line (16xxx = WoW Forever).
+package-as: GirthBind
+
+enable-nolib-creation: no
+
+manual-changelog:
+  filename: CHANGELOG.md
+  markup-type: markdown
+
+ignore:
+  - .busted
+  - .luacheckrc
+  - .luarc.json
+  - .github
+  - scripts
+  - tests
+  - tools
+  - types
+  - CONTRIBUTING.md

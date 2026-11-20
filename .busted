@@ -1,0 +1,10 @@
+return {
+    _all = {
+        lpath = "./tests/helpers/?.lua",
+    },
+    default = {
+        ROOT = { "tests" },
+        pattern = "_spec",
+        verbose = true,
+    },
+}

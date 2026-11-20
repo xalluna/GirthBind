@@ -1,0 +1,6 @@
+# Packager output
+.release/
+# Local Lua tooling
+.luarocks/
+lua_modules/
+luacov.*.out
