@@ -1,135 +1,210 @@
 # GirthBind
 
-A World of Warcraft: Forever addon that keeps **one macro** targeting the enemy you bind. Find a
-quest, pick one of its enemies, press **Bind**, and the macro now targets (and marks) that enemy.
+**One button that finds your quest target.** Tell GirthBind which enemy you're hunting, and its
+macro targets that enemy and marks it with a skull every time you press it. No more tab-targeting
+through a crowd looking for the one wolf the quest wants.
 
-Addons can't target units themselves (targeting and raid marks are protected actions), so
-GirthBind writes a macro that does it when you press it.
+Pick the enemy straight from a quest. GirthBind looks up every enemy a quest involves (the ones
+you kill, the ones that drop the items you need, and the ones that give kill credit) and gives
+each one a **Bind** button.
 
-## Features
+> Addons can't target enemies by themselves. Only a key press or click can, so GirthBind writes a
+> macro for you to press. You choose the enemy; the macro does the targeting.
 
-- **Quest lookup window** (`/gb`): search every quest by name, or browse your quest log. Each quest
-  lists its objectives with the enemies that serve them (kills, kill credit, item droppers and
-  special objectives), each with a **Bind** button. Powered by [QuestieDB](https://github.com/Questie/QuestieDB).
-- **Quest menus**: a **GirthBind** submenu in quest right-click menus opens the window on that
-  quest or binds an enemy in one click. It's added to:
-  - Questie's quest tracker
-  - Blizzard's objective tracker and quest log
-  - EllesmereUI's custom quest tracker
-- **Template macro body**: write the macro yourself, with `$Target.Name$` where the enemy's name
-  goes. The Options page shows a live preview and character count.
-- Works without QuestieDB: `/gb bind` and the Options page still work, and the quest features
-  explain what's missing.
+## Install
+
+1. Install **GirthBind** with the CurseForge app, or extract it into
+   `World of Warcraft\_forever_\Interface\AddOns`.
+2. For quest lookups, also install **[QuestieDB](https://www.curseforge.com/wow/addons/questiedb)**.
+   Without it you can still bind your current target (see below), but quest search and the quest
+   menus are switched off.
+3. Optional: GirthBind adds itself to the quest menus of **Questie** and **EllesmereUI** if you use
+   them.
+
+GirthBind is for WoW Forever.
+
+## Quick start
+
+1. Type **`/gb`**. The GirthBind window opens, showing the quests in your quest log.
+2. Click a quest. Its objectives appear on the right, each with the enemies that serve it.
+3. Click **Bind** next to the enemy you want.
+4. Type **`/gb pickup`** and drop the macro on an action bar. You only do this once: the macro
+   stays on your bar and changes whenever you bind a different enemy.
+5. Press the button. It targets the enemy and puts a skull on it.
+
+## Binding an enemy
+
+There are three ways to choose the enemy the macro targets. Only one enemy is bound at a time;
+binding another replaces it.
+
+### From the GirthBind window
+
+Open it with **`/gb`**.
+
+- **Left side:** your quest log. Type in the search box to search *every* quest instead, not just
+  the ones you have. The first search takes a moment while GirthBind indexes the quests
+  ("Indexing quests…").
+- **Right side:** the selected quest's objectives. Each one says how its enemies count:
+  - **Kill**: enemies the quest asks you to kill.
+  - **Kill credit**: every enemy that counts toward a kill objective.
+  - **Dropped by**: enemies that drop an item the quest needs.
+  - **Special objective**: enemies tied to a quest event.
+- Enemies in the quest's own zone are listed first, then by level. Long lists show the first 10;
+  click **Show N more…** for the rest.
+- Hover an enemy for its level, rank (Elite, Rare…), and zone.
+- Click **Bind**. The row turns to **Bound**, and the bottom of the window shows what the macro
+  targets now.
+
+The window stays open after you bind, so you can switch enemies quickly. Press **Esc** to close it.
+Drag it to move it; it reopens where you left it.
+
+You can also jump straight to a quest:
+
+- **`/gb lookup Kobold Camp Cleanup`** opens that quest if exactly one quest has that name.
+  Otherwise it shows the matching quests to pick from. Partial names work too.
+- **`/gb idlookup 7`** opens a quest by its quest ID.
+
+### From a quest's right-click menu
+
+Right-click a quest in your quest tracker or quest log and open the **GirthBind** submenu:
+
+- **Open in GirthBind…** opens the window on that quest.
+- The quest's enemies are listed underneath. Click one to bind it right away. The one bound now
+  says *(bound)*. If a quest has more than 15 enemies, the last item opens the window for the rest.
+
+The GirthBind entry appears in:
+
+- Questie's quest tracker
+- the game's own quest tracker (right-click the quest's title)
+- the quest log on the world map
+- EllesmereUI's quest tracker
+
+If the entry is greyed out, hover it to see why: usually the quest has no enemies to bind (a
+delivery quest, say), or QuestieDB isn't installed.
+
+### From your current target
+
+Target the enemy and type **`/gb bind`**. This works for anything you can target, with or without
+QuestieDB.
+
+## The macro
+
+GirthBind manages one macro, named **GirthBind** by default. Find it in `/macro` like any other, or
+type **`/gb pickup`** to put it on your cursor.
+
+Out of the box, pressing it runs:
+
+```
+/targetexact <enemy name>
+/cleartarget [dead]
+/tm 8
+```
+
+That targets a nearby enemy with exactly that name, lets go of it if it's already dead (press
+again for the next one), and marks it with a skull.
+
+Until you bind something, the macro does nothing. It's created the first time you open the
+GirthBind options, use `/gb pickup`, or bind an enemy. You can change its icon in `/macro`;
+GirthBind keeps your icon.
+
+### Changing what the macro does
+
+Open **Esc → Options → AddOns → GirthBind** (or type `/gb options`) and edit **Macro body**. Write
+any macro you like, and put **`$Target.Name$`** where the bound enemy's name should go. Click
+**Accept** to save; the macro updates right away.
+
+Some ideas:
+
+| You want | Macro body |
+| --- | --- |
+| Target and start attacking | `/targetexact $Target.Name$`<br>`/startattack` |
+| Send your pet in | `/targetexact $Target.Name$`<br>`/petattack` |
+| Use a red X instead of a skull | `/targetexact $Target.Name$`<br>`/cleartarget [dead]`<br>`/tm 7` |
+| Just target, no mark | `/targetexact $Target.Name$`<br>`/cleartarget [dead]` |
+
+Raid mark numbers for `/tm`: 8 skull, 7 cross, 6 square, 5 moon, 4 triangle, 3 diamond,
+2 circle, 1 star. In a raid, marking needs leader or assist.
+
+Good to know:
+
+- Under the editor, a **preview** shows the exact macro and its length. Macros are limited to 255
+  characters. A body that's too long isn't saved, and if a long enemy name would push it over, that
+  bind is refused and the macro keeps its old enemy.
+- Tokens are case-sensitive. A typo like `$Target.Nmae$` isn't replaced; the options page warns you
+  about it.
+- To type an actual dollar sign, write `$$`.
+- **Reset body** puts back the default.
+
+## Options
+
+**Esc → Options → AddOns → GirthBind**, or `/gb options`:
+
+| Option | What it does |
+| --- | --- |
+| **Macro name** | The macro GirthBind manages (up to 16 characters). Renaming keeps it on your action bars. |
+| **Pick up macro** | Puts the macro on your cursor to drop on a bar. |
+| **Macro body** | What the macro does; see above. |
+| **Reset body** | Restores the default macro body. |
+| **Bound enemy** / **Clear** | Shows who the macro targets now. Clear forgets them, so the macro does nothing. |
+| **Debug output** | Extra chat messages for troubleshooting. Leave it on *None* normally. |
+
+**Using a macro you already have:** if you type the name of one of your existing macros into
+**Macro name**, GirthBind takes it over and **overwrites its body** right away. The macro GirthBind
+was using before is left as it was and stops updating. To go back, type the old name again.
+
+Settings are shared by all your characters.
 
 ## Commands
 
 | Command | What it does |
 | --- | --- |
-| `/gb` | Open the lookup window on your quest log |
-| `/gb lookup [questName]` | Search for a quest; exactly one exact (case-insensitive) match opens it |
-| `/gb idlookup <questId>` | Open a quest by ID |
+| `/gb` | Open the GirthBind window |
+| `/gb lookup <quest name>` | Find a quest by name |
+| `/gb idlookup <quest ID>` | Open a quest by its ID |
 | `/gb bind` | Bind your current target |
-| `/gb pickup` | Put the macro on your cursor to drop on an action bar |
-| `/gb options` | Open Esc > Options > AddOns > GirthBind |
-| `/gb debug [log\|info\|warning\|error\|none]` | Show or set diagnostic chat output |
-| `/gb help` | List commands |
+| `/gb pickup` | Put the macro on your cursor |
+| `/gb options` | Open the GirthBind options |
+| `/gb debug <level>` | Troubleshooting output: `none` (normal), `error`, `warning`, `info`, or `log` (everything) |
+| `/gb help` | List these commands in chat |
 
-## Options
+## Combat
 
-Esc > Options > AddOns > **GirthBind**:
+- You can bind during combat. The macro can't be changed until combat ends, so GirthBind tells you
+  it's waiting and updates it the moment you're out.
+- Renaming the macro, picking it up, and opening the options page all wait until you're out of
+  combat.
+- In combat (and in some instances) the game hides who your target is from addons, so `/gb bind`
+  may say your target's identity is hidden. Bind before the pull, or from the window.
 
-- **Macro name**: the macro GirthBind manages (default `GirthBind`, up to 16 characters).
-  Renaming edits it in place, so action bar slots keep working. Naming a macro you already have
-  makes GirthBind manage that one instead: its body is overwritten right away, and the macro
-  GirthBind managed before is left as it was.
-- **Macro body**: the template. The default is:
+## Troubleshooting
 
-  ```
-  /targetexact $Target.Name$
-  /cleartarget [dead]
-  /tm 8
-  ```
+**Pressing the macro does nothing.**
+Nothing is bound yet, or no enemy with that exact name is close enough to target. Check what the
+bottom of the GirthBind window says, or the **Bound enemy** line in the options.
 
-- Reset body, the bound enemy with **Clear**, **Pick up macro**, and the debug level.
+**It keeps targeting a dead one.**
+The default macro lets go of dead targets; press it again for the next living one. If you've
+edited the body, keep the `/cleartarget [dead]` line.
 
-### Tokens
+**"Quest lookup needs the QuestieDB addon."**
+Install and enable QuestieDB, then reload. If it says QuestieDB is the wrong version, update
+whichever of GirthBind and QuestieDB is older.
 
-| Token | Replaced with |
-| --- | --- |
-| `$Target.Name$` | The bound enemy's name |
-| `$$` | A literal `$` |
+**There's no GirthBind entry in a quest menu.**
+Right-click the quest's title (not an objective line). In the game's own tracker, keep the cursor
+over the title as you right-click.
 
-Token names are case-sensitive. Anything token-shaped that isn't a known token (`$Target.Nmae$`)
-is left exactly as typed, and the Options page warns about it. A body that would render past the
-macro limit of 255 characters is refused.
+**"Your account macros are full."**
+Delete a macro you don't use; GirthBind needs one free account macro slot.
 
-Until you bind an enemy the macro is `/stopmacro`. It's created the first time you open the
-Options page, use `/gb pickup`, or bind something. Changes made in combat apply when combat ends.
+**The quest lists an enemy twice / lists the wrong ones.**
+Enemy data comes from QuestieDB. Enemies that share a name appear once, because the macro targets
+by name. Report data problems to Questie.
 
-## Requirements
-
-- WoW Forever (interface 16001)
-- Optional: [QuestieDB](https://www.curseforge.com/wow/addons/questiedb) (contract 4) for quest
-  lookup and quest menus; Questie and EllesmereUI for their menus.
-
-## Development
-
-### Layout
-
-```
-GirthBind.toc       load order; X-Curse-Project-ID for releases
-embeds.xml          vendored Ace3 (libs/), unmodified
-locales/enUS.lua    every user-facing string (AceLocale)
-src/
-  Init.lua          namespace, AceAddon object, dev-copy yield check
-  Core/             Util, Log, Database (AceDB schema + repair)
-  Macro/            Template (token engine, pure) and Macro (the game macro)
-  Quest/            QuestData (the only QuestieDB reader), QuestSearch, QuestLog
-  UI/               LookupWindow, Options (AceConfig)
-  Integrations/     MenuModel (what the menu entry contains) + one renderer per menu system
-  Commands.lua      /gb
-  Addon.lua         lifecycle (loads last)
-tests/              busted specs; helpers/ holds the fake client, fake QuestieDB, and loader
-types/              LuaLS declarations (editor-only)
-```
-
-Modules only touch the game in `OnEnable`, never at file load, so a disabled copy stays inert.
-Modules talk through AceEvent messages (`GIRTHBIND_BOUND_CHANGED`, `GIRTHBIND_MACRO_CHANGED`).
-
-### Tests and lint
-
-The tests boot the real Ace3 libraries and every TOC file inside a fake client
-(`tests/helpers/wow.lua`), so they cover lifecycle, events, combat queueing and macro writes. They
-run in a Lua 5.1 Docker image, the same one CI uses:
-
-```powershell
-./scripts/test.ps1
-```
-
-`-Only busted` or `-Only luacheck` runs one of the two; `-Rebuild` rebuilds the image.
-
-For editor support, install the LuaLS extension plus Ketho's *WoW API* extension; `.luarc.json`
-adds `libs/` and `types/` to the workspace.
-
-### Trying it in game
-
-```powershell
-./scripts/deploy-test.ps1
-```
-
-This copies the addon to `Interface\AddOns\GirthBind.Test`, with its own TOC and SavedVariables
-(`GirthBindTestDB`). `/reload` loads it. If the CurseForge build (`GirthBind`) is also enabled,
-the test copy turns itself off and says so in chat. The script finds the WoW Forever AddOns folder
-on a local drive; pass `-AddOnsPath` or set `GIRTHBIND_ADDONS` to choose one.
-
-### Releasing
-
-Push a `v*` tag (for example `v2.0.0`). The Release workflow runs lint and tests, then the
-[BigWigs packager](https://github.com/BigWigsMods/packager) builds the zip and uploads it to
-CurseForge project 1815823 and a GitHub release. Add the CHANGELOG entry before tagging.
-
-The repository needs a `CF_API_KEY` secret holding a CurseForge API token.
+**Reporting a bug**
+Type `/gb debug log`, do the thing that goes wrong, and include the chat output with your report.
+Then `/gb debug none` to turn it off.
 
 ## License
 
-MIT. Ace3 is distributed under its own BSD-style license (see `libs/*/LICENSE.txt`).
+MIT. GirthBind includes the Ace3 libraries, under their own license.

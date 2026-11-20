@@ -18,4 +18,4 @@ ignore:
   - tests
   - tools
   - types
-  - README.md
+  - CONTRIBUTING.md
