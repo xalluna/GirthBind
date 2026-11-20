@@ -1,0 +1,8 @@
+## Interface: 16001
+## Title: GirthBinder
+## Notes: Saves your target and keeps a GirthBinder macro that targets and marks it.
+## Author: Brandon
+## Version: 1.0.0
+## SavedVariables: GirthBinderDB
+
+GirthBinder.lua
