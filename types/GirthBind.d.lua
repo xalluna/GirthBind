@@ -1,0 +1,30 @@
+---@meta _
+-- LuaLS declarations for the shared addon namespace (the second value of `...` in every file).
+-- Not loaded by the game.
+
+---@class GirthBindNamespace
+---@field RELEASE_NAME string Folder name of the CurseForge release
+---@field ADDON_NAME string This copy's folder name
+---@field IS_RELEASE boolean
+---@field SV_NAME string This copy's SavedVariables global
+---@field MESSAGES { BOUND_CHANGED: string, MACRO_CHANGED: string }
+---@field L table<string, string> Localized strings (AceLocale)
+---@field addon table AceAddon object
+---@field db { global: GirthBindGlobalSettings }? AceDB database; nil until OnInitialize, and while yielding
+---@field yielded boolean? True when this dev copy stepped aside for the release build
+---@field ShouldYield fun(): boolean
+---@field Util GirthBindUtil
+---@field Log GirthBindLog
+---@field Database GirthBindDatabase
+---@field Template GirthBindTemplate
+---@field Macro GirthBindMacro
+---@field QuestData GirthBindQuestData
+---@field QuestSearch GirthBindQuestSearch
+---@field QuestLog GirthBindQuestLog
+---@field Lookup GirthBindLookup
+---@field Options GirthBindOptions
+---@field MenuModel GirthBindMenuModel
+---@field QuestieMenu GirthBindQuestieMenu
+---@field BlizzardMenus GirthBindBlizzardMenus
+---@field EllesmereMenu GirthBindEllesmereMenu
+---@field Commands GirthBindCommands

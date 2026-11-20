@@ -1,0 +1,27 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Lint and test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Same Lua 5.1 + busted + luacheck image scripts/test.ps1 uses locally.
+      - name: Build test image
+        run: docker build -f tools/test.Dockerfile -t girthbind-test tools
+
+      - name: Lint
+        run: docker run --rm -v "$PWD:/src" girthbind-test luacheck .
+
+      - name: Unit tests
+        run: docker run --rm -v "$PWD:/src" girthbind-test busted

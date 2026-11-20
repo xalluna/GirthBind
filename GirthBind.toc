@@ -1,0 +1,38 @@
+## Interface: 16001
+## Title: GirthBind
+## Notes: Keeps one macro that targets the enemy you bind, with a quest enemy lookup powered by QuestieDB.
+## Author: Brandon
+## Version: @project-version@
+## Category: Quests
+## IconTexture: Interface\TargetingFrame\UI-RaidTargetingIcon_8
+## SavedVariables: GirthBindDB
+## OptionalDeps: QuestieDB, Questie, EllesmereUI, EllesmereUIQuestTracker
+## X-Curse-Project-ID: 1815823
+## X-License: MIT
+
+embeds.xml
+
+locales\enUS.lua
+
+src\Init.lua
+src\Core\Util.lua
+src\Core\Log.lua
+src\Core\Database.lua
+
+src\Macro\Template.lua
+src\Macro\Macro.lua
+
+src\Quest\QuestData.lua
+src\Quest\QuestSearch.lua
+src\Quest\QuestLog.lua
+
+src\UI\LookupWindow.lua
+src\UI\Options.lua
+
+src\Integrations\MenuModel.lua
+src\Integrations\QuestieMenu.lua
+src\Integrations\BlizzardMenus.lua
+src\Integrations\EllesmereMenu.lua
+
+src\Commands.lua
+src\Addon.lua
