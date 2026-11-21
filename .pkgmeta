@@ -9,6 +9,12 @@ manual-changelog:
   filename: CHANGELOG.md
   markup-type: markdown
 
+# CurseForge project slugs, sent with each upload; they fill the project's Relations tab.
+# QuestieDB powers quest lookup; Questie gets a GirthBind entry in its tracker menu.
+optional-dependencies:
+  - questiedb
+  - questie
+
 ignore:
   - .busted
   - .luacheckrc
